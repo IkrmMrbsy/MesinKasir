@@ -13,10 +13,10 @@ public class LoginController {
     public void showLogin(){
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Username");
+        System.out.print("Username :");
         String username = scanner.nextLine();
 
-        System.out.print("Password");
+        System.out.print("Password :");
         String password = scanner.nextLine();
 
         User user = userService.login(username, password);
@@ -42,8 +42,7 @@ public class LoginController {
             System.out.println("2. Edit Produk");
             System.out.println("3. Hapus Produk");
             System.out.println("4. Lihat Semua Produk");
-            System.out.println("5. Kelola Pengguna");
-            System.out.println("6. Logout");
+            System.out.println("5. Logout");
             System.out.print("Pilih opsi: ");
 
             int option = scanner.nextInt();
@@ -68,6 +67,7 @@ public class LoginController {
                 case 5:
                     System.out.println("Logging out...");
                     exit = true;
+                    showLogin();
                     break;
                 default:
                     System.out.println("Opsi tidak valid.");

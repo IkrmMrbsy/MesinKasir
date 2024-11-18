@@ -102,16 +102,38 @@ public class ProdukDao {
     }
 
     public void deleteProduk(int id){
-        String query = "DELETE FROM produk WHERE ProdukID = ?";
-        try(Connection connection = Koneksi.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query)){
+        String deleteTransaksiQuery = "DELETE FROM transaksiDetail WHERE ProdukID = ?";
+        String deleteProdukquery = "DELETE FROM produk WHERE ProdukID = ?";
 
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+        try(Connection connection = Koneksi.getConnection()){
+            try(PreparedStatement stmtTransaksi = connection.prepareStatement(deleteTransaksiQuery)){
+                stmtTransaksi.setInt(1, id);
+                stmtTransaksi.executeUpdate();
+            }
 
-            System.out.println("Produk berhasil di hapus");
+            try(PreparedStatement stmtProduk= connection.prepareStatement(deleteProdukquery)){
+                stmtProduk.setInt(1, id);
+                stmtProduk.executeUpdate();
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public boolean canDeleteProduk(int id){
+        String query = "SELECT COUNT(*) FROM transaksidetail WHERE ProdukID = ?";
+
+        try(Connection connection = Koneksi.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query)){
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next() && rs.getInt(1) > 0){
+                return false;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
     }
 }

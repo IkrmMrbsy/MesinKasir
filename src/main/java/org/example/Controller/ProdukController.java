@@ -63,7 +63,12 @@ public class ProdukController {
         System.out.print("ID Produk yang akan di hapus :");
         int id = scanner.nextInt();
 
-        scanner.nextInt();
+        if (produkDao.canDeleteProduk(id)){
+            produkDao.deleteProduk(id);
+            System.out.println("Produk berhasil di hapus");
+        }else {
+            System.out.println("Produk tidak dapat dihapus karena masih digunakan di detail transaksi.");
+        }
 
         produkDao.deleteProduk(id);
         System.out.println("Produk berhasil di hapus");
